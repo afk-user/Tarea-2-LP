@@ -3,6 +3,7 @@ main: Bomba.c Bomba.h Tablero.c Tablero.h Tierra.h TreasureFinder.c
 
 run: main
 	./main
+	
 valrun: main
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./main
 
