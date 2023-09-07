@@ -1,8 +1,10 @@
-main: Bomba.c Tablero.C TreasureFinder.c Tierra.h Bomba.h Tablero.h
-	gcc Bomba.c Tablero.c TreasureFinder.c -o output -Wall -g
+main: Bomba.c Bomba.h Tablero.c Tablero.h Tierra.h TreasureFinder.c
+	gcc Bomba.c Tablero.c TreasureFinder.c -o main -Wall -g
 
-valrun: output
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./output
+run: main
+	./main
+valrun: main
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./main
 
-compress: Bomba.c Tablero.C TreasureFinder.c Tierra.h Bomba.h Tablero.h readme.txt Makefile
-	tar -czf Tarea2LP_202273560-0.tar.gz  Bomba.c Tablero.C TreasureFinder.c Tierra.h Bomba.h Tablero.h readme.txt Makefile
+compress: Bomba.c Bomba.h Tablero.c Tablero.h Tierra.h TreasureFinder.c readme.txt Makefile
+	tar -czf Tarea2LP_202273560-0.tar.gz Bomba.c Bomba.h Tablero.c Tablero.h Tierra.h TreasureFinder.c readme.txt Makefile

@@ -36,12 +36,13 @@ int main(int argc, char const *argv[]){
         end_turn = 0;
         printf("Tablero - Turno %d:\n",turn_counter);
         MostrarTablero();
+        printf("\n");
         while (end_turn == 0){
             if(foundTreasures==allTreasures){
                 end_game = 1;
                 break;
             }
-            printf("\nSeleccione una acción:\n1.Colocar Bomba  2.Mostrar Bombas  3.Mostrar Tesoros  4.Pasar Turno  5.Rendirse\nEscoja una opción: ");
+            printf("Seleccione una acción:\n1.Colocar Bomba  2.Mostrar Bombas  3.Mostrar Tesoros  4.Pasar Turno  5.Rendirse\nEscoja una opción: ");
             scanf("%d",&input);
             printf("\n");
 
@@ -84,7 +85,7 @@ int main(int argc, char const *argv[]){
             }
         }
     }
-    printf("\nJuego Terminado\n");
+    printf("Juego Terminado\n");
     if (surrender==1){
         printf("Mejor suerte para la próxima...\n");
     }

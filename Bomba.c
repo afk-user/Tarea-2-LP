@@ -8,14 +8,17 @@
 coordenada en 1, si termina en 0 el contador, debe llamar la función explotar de la
 Bomba. */
 void TryExplotar(int fila, int columna){
-    Bomba* bombHere = (Bomba*)tablero[fila][columna];
-    if(bombHere->explotar==ExplosionPunto){
-        ExplosionPunto(fila,columna);
-    }else{
-        ExplosionX(fila,columna);
-    }
-    BorrarBomba(fila,columna);
-    return;
+    Bomba* bombHere = (Bomba*)tablero[fila][columna]; 
+    bombHere->contador_turnos-=1;
+    if(bombHere->contador_turnos==0){
+        if(bombHere->explotar==ExplosionPunto){
+            ExplosionPunto(fila,columna);
+        }else{
+            ExplosionX(fila,columna);
+        }
+        BorrarBomba(fila,columna);
+        return;
+    } else tablero[fila][columna] = (void*)bombHere;
 }
 
 /* Recibe coordenadas. Borra la Bomba en la coordenada de la memoria

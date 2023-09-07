@@ -35,12 +35,7 @@ arriba abajo intentando explotar cada una de las bombas en el tablero con TryExp
 void PasarTurno(){
     for(int i=0;i<dimension;i++){
         for(int j=0;j<dimension;j++){
-            if(DirtOrBomb[i][j]=='b'){
-                Bomba* bomb = (Bomba*)tablero[i][j];  
-                bomb->contador_turnos-=1;
-                if(bomb->contador_turnos==0) TryExplotar(i,j);
-                else tablero[i][j] = (void*)bomb;
-            }
+            if(DirtOrBomb[i][j]=='b') TryExplotar(i,j);
         }
     }
     return;
@@ -94,7 +89,7 @@ void MostrarBombas(){
         for(int j=0;j<dimension;j++){
             if(DirtOrBomb[i][j]=='b'){
                 bombNow = (Bomba*)tablero[i][j];
-                printf("Turnos para explotar: %d\nCoordenada: %d %d\nForma Explosión: ExplosionX\nVida de Tierra Debajo: %d\n",bombNow->contador_turnos,i+1,j+1,bombNow->tierra_debajo->vida);
+                printf("Turnos para explotar: %d\nCoordenada: %d %d\nForma Explosión: ExplosionX\nVida de Tierra Debajo: %d\n\n",bombNow->contador_turnos,i+1,j+1,bombNow->tierra_debajo->vida);
             }
         }
     }
@@ -119,6 +114,7 @@ void VerTesoros(){
         }
         printf("\n");
     }
+    printf("\n");
     return;
 }
 
