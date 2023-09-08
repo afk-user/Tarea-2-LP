@@ -41,10 +41,8 @@ void ExplosionPunto(int fila, int columna){
     return;
 }
 
-/* Explota la bomba como una equis, afecta 5 celdas solamente (no se extiende
-por el tablero). Disminuye la vida de las celdas de Tierra afectadas en 1. Al momento de
-crear una bomba con este tipo de explosión, su variable contador_turnos debe asignarse a
-3. */
+/* Explota la bomba como una equis, afecta las esquinas en un radio de 1. Disminuye la vida de las celdas de Tierra afectadas en 1. Al momento de
+crear una bomba con este tipo de explosión, su variable contador_turnos debe asignarse a 3. */
 void ExplosionX(int fila, int columna){
     int disrow=0, discolumn=0;
     if(((Bomba*)tablero[fila][columna])->tierra_debajo->vida!=0)
