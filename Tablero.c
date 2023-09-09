@@ -8,10 +8,14 @@ void*** tablero;
 char** DirtOrBomb;
 int dimension, allTreasures, foundTreasures;
 
-/* Recibe el tamaño del tablero n, generando una matriz void n x n
-inicializado con Tierra en cada una de sus celdas. Cada Tierra se le asigna al azar vida
-entre los valores {1, 2, 3} (equiprobable) además del parámetro es_tesoro (5% de
-probabilidad de ser un tesoro). */
+/*****
+* void IniciarTablero
+******
+* Recibe el tamaño de un tablero y genera una matriz cuadrada void* de largo n, inicializando structs Tierra en sus celdas.
+******
+* Input:
+* int n : Descripción Parámetro
+*****/
 void IniciarTablero(int n){
     tablero = (void***)malloc(n*sizeof(void**));
     DirtOrBomb = (char**)malloc(n*sizeof(char*));
@@ -30,8 +34,13 @@ void IniciarTablero(int n){
     return;
 }
 
-/* Recibe el tablero del juego. Recorre la matriz de izquierda a derecha y de
-arriba abajo intentando explotar cada una de las bombas en el tablero con TryExplotar. */
+/*****
+* void PasarTurno
+******
+* Recibe el tablero del juego. Recorre la matriz de izquierda a derecha y de arriba abajo intentando explotar cada una de las bombas en el tablero con TryExplotar.
+******
+* No tiene inputs, el tablero es una variable global.
+*****/
 void PasarTurno(){
     for(int i=0;i<dimension;i++){
         for(int j=0;j<dimension;j++){
@@ -41,8 +50,16 @@ void PasarTurno(){
     return;
 }
 
-/* Recibe una Bomba y coordenadas. Coloca una Bomba en el tablero, en la
-celda especificada por el parámetro coordenadas. */
+/*****
+* void ColocarBomba
+******
+* Recibe una Bomba y coordenadas. Coloca una Bomba en el tablero, en la celda especificada por el parámetro coordenadas.
+******
+* Input:
+* Bomba* b : puntero al struct de la bomba a plantar.
+* int fila : número que va del 0 a dimension-1, indica en que fila se plantará la bomba.
+* int columna : número que va del 0 a dimension-1, indica en que columna se plantará la bomba.
+*****/
 void ColocarBomba(Bomba* b, int fila, int columna){
     DirtOrBomb[fila][columna] = 'b';
     Bomba* bomb = malloc(sizeof(Bomba));
@@ -52,10 +69,13 @@ void ColocarBomba(Bomba* b, int fila, int columna){
     return;
 }
 
-/* Muestra el tablero representando la Tierra con su vida, Bomba con o
-(letra “o” minúscula) y un tesoro descubierto con *. (Tierra = {“3”, “2”, “1”, “0”},
-Bomba = “o”, Mostrar tesoro de Tierra = “*”. Notar que si una Tierra llega a vida = 0 y
-no es un tesoro, simplemente se enseñará como “0”) */
+/*****
+* void MostrarTablero
+******
+* Muestra el tablero representando la Tierra con su vida, Bomba con o (letra “o” minúscula) y un tesoro descubierto con *.
+******
+* No tiene inputs, el tablero es una variable global.
+*****/
 void MostrarTablero(){
     for(int i=0;i<dimension;i++){
         for(int j=0;j<dimension;j++){
@@ -73,16 +93,13 @@ void MostrarTablero(){
     return;
 }
 
-/* Muestra por pantalla cada una de las bombas en el tablero de la
-siguiente forma:
-****
-Turnos para explotar: el valor
-Coordenada: x y
-Forma Explosión: nombre de la función explotar (ExplosionPunto o
-ExplosionX)
-Vida de Tierra Debajo: el valor.
-****
-- Es importante notar que las coordenadas x e y van desde 1 hasta el tamaño del tablero. */
+/*****
+* void MostrarBombas
+******
+* Muestra por pantalla las descripciones de las bombas que se encuentran en el tablero al momento de llamar la función.
+******
+* No tiene inputs, el tablero es una variable global.
+*****/
 void MostrarBombas(){
     Bomba* bombNow;
     for(int i=0;i<dimension;i++){
@@ -96,8 +113,13 @@ void MostrarBombas(){
     return;
 }
 
-/* Muestra todos los tesoros en el tablero (ocultos y revelados). Esta función
-está pensada para facilitar el testeo. Los espacios en donde hay tesoros se marcan con * en vez de un número. */
+/*****
+* void VerTesoros
+******
+* Muestra todos los tesoros en el tablero (ocultos y revelados). No muestra Bombas. Los espacios en donde hay tesoros se marcan con * en vez de un número.
+******
+* No tiene inputs, el tablero es una variable global.
+*****/
 void VerTesoros(){
     for(int i=0;i<dimension;i++){
         for(int j=0;j<dimension;j++){
@@ -118,7 +140,13 @@ void VerTesoros(){
     return;
 }
 
-/* Borra el tablero de la memoria Heap. */
+/*****
+* void BorrarTablero
+******
+* Borra el tablero de la memoria Heap. En caso de haber bombas puestas también las elimina.
+******
+* No tiene inputs, el tablero es una variable global.
+*****/
 void BorrarTablero(){
     for(int i=0;i<dimension;i++){
         for(int j=0;j<dimension;j++){
@@ -133,18 +161,26 @@ void BorrarTablero(){
     return;
 }
 
+/*****
+* int TreasureCheck
+******
+* Recorre el tablero generado en busca de tesoros, y los suma a allTreasures para llevar la cuenta de los tesoros.
+******
+* No hay inputs. Tablero, dimensión y allTreasures son variables globales.
+******
+* Returns:
+* int, retorna la cantidad de tesoros encontrados en el tablero.
+*****/
 int TreasureCheck(){
-    int flag = 0;
     for(int i = 0;i<dimension;i++){
         for(int j = 0;j<dimension;j++){
             if(DirtOrBomb[i][j] == 't'){
                 Tierra* dirtNow = (Tierra*)tablero[i][j];
                 if(dirtNow->es_tesoro==1){
-                    flag = 1;
                     allTreasures++;
                 }
             }
         }
     }
-    return flag;
+    return allTreasures;
 }

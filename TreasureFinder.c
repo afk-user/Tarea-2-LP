@@ -5,11 +5,11 @@
 #include "Bomba.h"
 #include "Tablero.h"
 
-int input, row, column, turn_counter = 0, end_game = 0, end_turn = 0, surrender = 0, exit_flag = 0;
-char exit_output1,exit_output2;
+int input, row, column, turn_counter = 0, end_game = 0, end_turn = 0, surrender = 0;
+char exit_input1,exit_input2;
 
 int main(int argc, char const *argv[]){
-    allTreasures = 0, foundTreasures = 0;
+    allTreasures = 0, foundTreasures = 0; // fueron declaradas en Tablero.c
     printf("¡Bienvenido a Treasure Finder!\nIndique el tamaño del tablero a jugar:\n1.7x7  2.10x10  3.12x12\nSu input: ");
     scanf("%d",&input);
     printf("Empezando juego... ");
@@ -22,13 +22,12 @@ int main(int argc, char const *argv[]){
         break;
     }
     srand(time(NULL));
+
     IniciarTablero(dimension);
     while (TreasureCheck() == 0){
         BorrarTablero();
-        allTreasures = 0, foundTreasures = 0;
         IniciarTablero(dimension);       
     }
-    
     printf("¡listo!\n\n");
     Bomba* bomb = malloc(sizeof(Bomba));
     while (end_game == 0){
@@ -92,16 +91,10 @@ int main(int argc, char const *argv[]){
     else printf("¡Felicidades, Ganaste el juego!\n");
     printf("Presione la tecla Enter para salir...\n");
     
-    scanf("%c",&exit_output1);
-    while ((exit_output2 = getchar()) != '\n' && exit_output1 != EOF);
+    scanf("%c",&exit_input1);
+    while ((exit_input2 = getchar()) != '\n' && exit_input2 != EOF);
 
     BorrarTablero();
     free(bomb);
     return 0;
 }
-
-/* EJEMPLOS DE RANDOM PARA FACILITAR SU USO.
-*
-*   srand(time(0)); // Setea la seed del random.
-*   int ejemplo_vida = (rand() % 3) + 1; // Obtiene al azar la vida de Tierra a asignar.
-*/

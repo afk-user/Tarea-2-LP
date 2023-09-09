@@ -4,25 +4,35 @@
 #include "Bomba.h"
 #include "Tablero.h"
 
-/* Recibe coordenadas. Reduce contador_turnos de la Bomba en la
-coordenada en 1, si termina en 0 el contador, debe llamar la función explotar de la
-Bomba. */
+/*****
+* void TryExplotar
+******
+* Recibe coordenadas. Reduce contador_turnos de la Bomba en la coordenada en 1, si termina en 0 el contador, debe llamar la función explotar de la Bomba.
+******
+* Input:
+* int fila : número que va del 0 a dimension-1, indica fila de la bomba que se intenta explotar.
+* int columna : número que va del 0 a dimension-1, indica columna de la bomba que se intenta explotar.
+*****/
 void TryExplotar(int fila, int columna){
-    Bomba* bombHere = (Bomba*)tablero[fila][columna]; 
+    Bomba* bombHere = (Bomba*)tablero[fila][columna];
     bombHere->contador_turnos-=1;
     if(bombHere->contador_turnos==0){
-        if(bombHere->explotar==ExplosionPunto){
-            ExplosionPunto(fila,columna);
-        }else{
-            ExplosionX(fila,columna);
-        }
+        bombHere->explotar(fila,columna);
         BorrarBomba(fila,columna);
         return;
     } else tablero[fila][columna] = (void*)bombHere;
+    return;
 }
 
-/* Recibe coordenadas. Borra la Bomba en la coordenada de la memoria
-Heap, pero antes de eso devuelve la Tierra al tablero. */
+/*****
+* void BorrarBomba
+******
+* Borra la Bomba en la coordenada de la memoria Heap, y devuelve la Tierra al tablero.
+******
+* Input:
+* int fila : número que va del 0 a dimensión-1, indica fila de la bomba a borrar.
+* int columna : número que va del 0 a dimensión-1, indica columna de la bomba a borrar.
+*****/
 void BorrarBomba(int fila, int columna){
     DirtOrBomb[fila][columna] = 't';
     Bomba* bombNow = (Bomba*)tablero[fila][columna];
@@ -31,18 +41,33 @@ void BorrarBomba(int fila, int columna){
     return;
 }
 
-/* Explota la bomba como un punto, es decir, solo afecta a la tierra debajo
-de la Bomba. Disminuye la vida de esa Tierra en 3. Al momento de crear una bomba con
-este tipo de explosión, su variable contador_turnos debe asignarse a 1. */
+/*****
+* void ExplosionPunto
+******
+* Hace explotar la bomba en la casilla en la que se encuentra, disminuyendo en 3 puntos la vida de la tierra debajo.
+******
+* Input:
+* int fila : número que va del 0 a dimension-1, indica fila de la bomba a detonar.
+* int columna : número que va del 0 a dimension-1, indica columna de la bomba a detonar.
+*****/
 void ExplosionPunto(int fila, int columna){
     Bomba* bombHere = (Bomba*)tablero[fila][columna];
-    bombHere->tierra_debajo->vida = 0;
+    bombHere->tierra_debajo->vida -= 3;
+    if(bombHere->tierra_debajo->vida<0) bombHere->tierra_debajo->vida=0;
     if(bombHere->tierra_debajo->es_tesoro==1) foundTreasures++;
     return;
 }
 
-/* Explota la bomba como una equis, afecta las esquinas en un radio de 1. Disminuye la vida de las celdas de Tierra afectadas en 1. Al momento de
-crear una bomba con este tipo de explosión, su variable contador_turnos debe asignarse a 3. */
+/*  */
+/*****
+* void ExplosionX
+******
+* Explota la bomba como una equis, afectando las celdas diagonales a esta en un radio de 1 celda. Disminuye la vida de las celdas de Tierra afectadas en 1.
+******
+* Input:
+* int fila : número que va del 0 a dimension-1, indica fila de la bomba a detonar.
+* int columna : número que va del 0 a dimension-1, indica columna de la bomba a detonar.
+*****/
 void ExplosionX(int fila, int columna){
     int disrow=0, discolumn=0;
     if(((Bomba*)tablero[fila][columna])->tierra_debajo->vida!=0)
